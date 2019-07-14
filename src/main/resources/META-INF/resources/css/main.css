@@ -1,0 +1,74 @@
+.center {
+    margin: 0 auto;
+}
+
+.red {
+    color: #F44336;
+}
+.create-task-panel{
+    width: 50%
+}
+
+.diaramm-panel{
+    width: 50%
+}
+
+.logo {
+    width: 85%
+}
+
+.detail {
+    width: 15%;
+    padding-left: 25px;
+}
+
+.detail td {
+    font-size: 24px;
+}
+
+.phx-border-none .ui-widget-content,
+.phx-border-none .ui-widget-content .ui-panelgrid-cell{
+    border: none;
+}
+
+.phx-border-1 .ui-widget-content,
+.phx-border-1 .ui-widget-content .ui-panelgrid-cell{
+    border: 1px solid;
+    border-color: inherit;
+    border-collapse: inherit;
+}
+
+.phx-border-bottom .ui-datascroller-content .ui-datascroller-list .ui-datascroller-item {
+    border-bottom: 1px solid #A8A8A8;
+    padding: 25px 10px;
+    /* with the exported variables from Nova and Luna Themes*/
+    border-bottom-color: var(--input-border-color, #A8A8A8);
+}
+
+.label {
+    width: 20%;
+    padding: 4px;
+}
+
+.value {
+    width: 80%;
+    padding: 4px;
+}
+
+.grid {
+    width: 100%;
+}
+
+.error {
+    color: red;
+}
+
+.outputLabel {
+    font-weight: bold;
+}
+
+.grid {
+    width: 33%;
+    padding: 4px;
+}
+

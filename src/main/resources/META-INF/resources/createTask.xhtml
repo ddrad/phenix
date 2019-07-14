@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="taskCreatedId">
+        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+        <p:wizard flowListener="#{taskCreatorWizard.onFlowProcess}" widgetVar="tcWiz">
+            <p:tab id="personal" title="Personal">
+                <p:panel header="Personal Details" id="personalP">
+                    <p:messages/>
+                    <h:panelGrid columns="2" columnClasses="label, value, phx-border-1">
+                        <h:outputText value="Task Name: *"/>
+                        <p:inputText value="#{taskCreatorWizard.task.name}"
+                                     required="true"
+                                     label="TaskName"
+                                     style="width:170px"/>
+
+                        <h:outputText value="Task Status: *"/>
+                        <p:selectOneMenu id="status"
+                                         style="width:170px"
+                                         required="true"
+                                         disabled="true">
+                            <f:selectItem itemLabel="New" itemValue="NEW"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="type" value="Task Type: "/>
+                        <p:selectOneMenu id="type"
+                                         value="#{taskCreatorWizard.task.type}"
+                                         converter="taskTypeConverter"
+                                         style="width:170px"
+                                         required="true">
+                            <f:selectItem itemLabel="Select Type" noSelectionOption="true"/>
+                            <f:selectItems value="#{taskCreatorWizard.taskTypes}"
+                                           var="taskType"
+                                           itemLabel="#{taskType.typeName}"
+                                           itemValue="#{taskType}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Skip to last: "/>
+                        <h:selectBooleanCheckbox value="#{taskCreatorWizard.skip}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="assigned" title="Assigned">
+                <p:panel header="Assigned Details">
+                    <p:messages/>
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Author: "/>
+                        <p:inputText value="#{request.userPrincipal.name}"
+                                     readonly="true"
+                                     disabled="true"/>
+
+                        <h:outputText value="Assigned To: "/>
+                        <p:inputText value="#{taskCreatorWizard.task.assignedTo}"/>
+
+                        <h:outputText value="Skip to last: "/>
+                        <h:selectBooleanCheckbox value="#{taskCreatorWizard.skip}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="confirm" title="Confirmation">
+                <p:panel header="Confirmation">
+                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="ID: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.id}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Task Name: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.name}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Task Type: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.type}" styleClass="outputLabel"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Task Status: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.status}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Author: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.author}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Assigned To: "/>
+                            <h:outputText value="#{taskCreatorWizard.task.assignedTo}" styleClass="outputLabel"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Submit"
+                                     action="#{taskCreatorWizard.save}"
+                                     update="#{taskBoardId}"
+                                     process="@this"
+                                     oncomplete="PF('tcWiz').loadStep('personal',true);">
+                    </p:commandButton>
+                </p:panel>
+            </p:tab>
+        </p:wizard>
+
+    </h:form>
+
+</ui:composition>

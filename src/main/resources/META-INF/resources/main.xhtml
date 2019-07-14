@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:P="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>PrimeFaces Hello World Example</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="/template/common.xhtml">
+        <ui:define name="content">
+            <p:panel header="Create New Task"
+                     rendered="#{request.isUserInRole('ADMIN')}">
+                <p:panelGrid
+                             style="width:100%"
+                             columnClasses="create-task-panel,diaramm-panel">
+                    <p:row>
+                        <p:column style="width:35%">
+                            <ui:include src="/createTask.xhtml">
+                                <ui:param name="taskBoardId" value="@(*[id*=taskBoardId])"></ui:param>
+                            </ui:include>
+                        </p:column>
+
+                        <p:column style="width:25%">
+                            <ui:include src="/countTaskChart.xhtml"/>
+                        </p:column>
+
+                        <p:column style="width:40%">
+                            <ui:include src="/countAssignedTaskChart.xhtml"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel header="All Tasks">
+                <h:form id="form">
+                    <p:growl id="message" sticky="true" showDetail="true"/>
+                    <p:dataScroller value="#{taskController.tasks}"
+                                    var="p" chunkSize="10"
+                                    styleClass="phx-border-bottom"
+                                    id="taskBoardId">
+
+                        <h:panelGrid columns="3"
+                                     style="width:100%"
+                                     columnClasses="logo,detail">
+                            <p:outputPanel>
+                                <h:panelGrid columns="4" cellpadding="5">
+                                    <h:outputText style="font-weight: bold;" value="Id:"/>
+                                    <h:outputText value="#{p.id}"/>
+                                    <h:outputText style="font-weight: bold;" value="Status:"/>
+                                    <h:outputText value="#{p.status}"/>
+
+                                    <h:outputText style="font-weight: bold;" value="Name:"/>
+                                    <h:outputText value="#{p.name}"/>
+                                    <h:outputText style="font-weight: bold;" value="Autor:"/>
+                                    <h:outputText value="#{p.author}"/>
+
+                                    <h:outputText style="font-weight: bold;" value="Type:"/>
+                                    <h:outputText value="#{p.type}"/>
+                                    <h:outputText style="font-weight: bold;" value="Assigned To:"/>
+                                    <h:outputText value="#{p.assignedTo}"/>
+
+                                    <h:outputText style="font-weight: bold;" value="Created:"/>
+                                    <h:outputText value="#{p.created}" converter="localDateTimeConverter">
+                                    </h:outputText>
+                                </h:panelGrid>
+                            </p:outputPanel>
+
+                            <p:outputPanel style="margin:0 auto;">
+                                <p:commandLink update=":form:productDetail"
+                                               oncomplete="PF('productDialog').show()"
+                                               title="View Detail">
+                                    <h:outputText styleClass="ui-icon pi pi-search" value="Show Details"/>
+                                    <f:setPropertyActionListener value="#{p}"
+                                                                 target="#{taskController.selectedTask}"/>
+                                </p:commandLink>
+                            </p:outputPanel>
+
+                        </h:panelGrid>
+                    </p:dataScroller>
+
+                    <p:dialog header="Product Info"
+                              widgetVar="productDialog"
+                              modal="true"
+                              showEffect="fade"
+                              hideEffect="fade"
+                              resizable="false">
+                        <p:outputPanel id="productDetail"
+                                       style="text-align:center;">
+                            <p:panelGrid columns="2"
+                                         rendered="#{not empty taskController.selectedTask}"
+                                         columnClasses="label,value">
+
+                                <h:outputText value="Id:"/>
+                                <h:outputText value="#{taskController.selectedTask.id}"/>
+
+                                <h:outputText value="Year"/>
+                                <h:outputText value="#{taskController.selectedTask.name}"/>
+
+                                <h:outputText value="Status"/>
+                                <h:outputText value="$#{taskController.selectedTask.status}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1"
+                                         rendered="#{empty taskController.selectedTask}"
+                                         columnClasses="error">
+                                <h:outputText value="This client's already opened by another user."/>
+                            </p:panelGrid>
+                        </p:outputPanel>
+
+                        <p:ajax event="close" listener="#{taskController.closeTaskDetails}" />
+                    </p:dialog>
+                </h:form>
+
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

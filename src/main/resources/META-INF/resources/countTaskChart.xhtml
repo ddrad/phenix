@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form>
+        <p:outputPanel>
+            <p:poll interval="30" update="votes"/>
+            <p:chart id="votes" type="pie" model="#{taskChartController.livePieModel}" style="width:400px;height:300px"/>
+        </p:outputPanel>
+    </h:form>
+
+</ui:composition>
